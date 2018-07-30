@@ -1,0 +1,72 @@
+empty.1, empty.c: Changed default mode of the log file from 0700 to 0600,
+and added option "--logfile-mode=mode".  Closes: #443448.
+
+
+Index: empty-0.6.20b/empty.1
+===================================================================
+--- empty-0.6.20b.orig/empty.1
++++ empty-0.6.20b/empty.1
+@@ -175,6 +175,10 @@ This option allows to log the whole
+ .B empty
+ session to a file. Marks >>> and <<< show the directions of data flow.
+ .TP
++\-\-logfile-mode=mode
++This option allows to choose the mode of the log file created with the -L option.
++The default mode is 0600.
++.TP
+ \-p file.pid
+ Save PID of empty daemon process to a file
+ .TP
+Index: empty-0.6.20b/empty.c
+===================================================================
+--- empty-0.6.20b.orig/empty.c
++++ empty-0.6.20b/empty.c
+@@ -38,6 +38,9 @@
+ #endif
+ 
+ 
++#define _GNU_SOURCE
++#include <getopt.h>
++
+ #include <unistd.h>
+ #include <sys/types.h>
+ 
+@@ -205,12 +208,28 @@ int main (int argc, char *argv[]) {
+ 	int	pgrp;
+ #endif
+ 
++	unsigned int logfile_mode = S_IRUSR | S_IWUSR; // was: S_IRWXU;
++
++	static struct option long_options[] =
++	{
++		{ "logfile-mode", 1, 0, 0 },
++		{ NULL, 0, 0, 0 }
++	};
++
++	int option_index = -1;
++
+ #ifndef __linux__
+ 	while ((ch = getopt(argc, argv, "Scvhfrb:kwslp:i:o:t:L:")) != -1)
+ #else
+-	while ((ch = getopt(argc, argv, "+Scvhfrb:kwslp:i:o:t:L:")) != -1)
++	while ((ch = getopt_long(argc, argv, "+Scvhfrb:kwslp:i:o:t:L:", long_options, &option_index)) != -1)
+ #endif
+ 		switch (ch) {
++			case 0:
++				if( option_index >= 0
++				&& strcmp( long_options[option_index].name, "logfile-mode" ) == 0
++				&& optarg )
++					sscanf( optarg, "%o", &logfile_mode );
++				break;
+ 			case 'f':
+ 				fflg = 1;
+ 				break;
+@@ -483,7 +502,7 @@ int main (int argc, char *argv[]) {
+ 	}
+ 
+ 	if (Lflg)
+-		if ((lfd = open(sl, O_CREAT|O_WRONLY|O_APPEND, S_IRWXU)) == -1)
++		if ((lfd = open(sl, O_CREAT|O_WRONLY|O_APPEND, logfile_mode)) == -1)
+ 			(void)syslog(LOG_NOTICE,
+ 				"Warning: Can't open %s for session-log %m", sl);
+ 

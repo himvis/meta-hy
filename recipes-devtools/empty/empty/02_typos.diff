@@ -1,0 +1,25 @@
+Patch by "A. Costa" <agcosta@gis.net>, thanks.
+Closes: #521656 'man empty' typos: "interfase" and "specitied"
+
+Index: empty-0.6.20b/empty.1
+===================================================================
+--- empty-0.6.20b.orig/empty.1
++++ empty-0.6.20b/empty.1
+@@ -54,7 +54,7 @@ At this point any application can easily
+ .B EXAMPLES 
+ section for the details. To simplify this operations,
+ .B empty
+-offers an interfase to just
++offers an interface to just
+ .B send
+ any data (use
+ .B \-s
+@@ -100,7 +100,7 @@ and its arguments. If you omit fifo file
+ with its job control algorithm will create them under /tmp directory using this templates: empty.PPID.PID.in and empty.PPID.PID.out, here PPID is usually your shell system process ID and PID is system process ID of empty-daemon.
+ .TP
+ \-s
+-send data (request) to the forked process. If fifo file was not specitied with
++send data (request) to the forked process. If fifo file was not specified with
+ .B \-o
+ key,
+ .B empty 

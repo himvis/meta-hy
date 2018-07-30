@@ -1,0 +1,13 @@
+Index: empty-0.6.20b/Makefile
+===================================================================
+--- empty-0.6.20b.orig/Makefile
++++ empty-0.6.20b/Makefile
+@@ -16,7 +16,7 @@ LIBS =	-lutil
+ PREFIX = /usr/local
+ 
+ all:
+-	${CC} ${CFLAGS} -Wall ${LIBS} -o empty empty.c
++	${CC} ${CFLAGS} ${LDFLAGS} -Wall ${LIBS} -o empty empty.c
+ 
+ FreeBSD:	all
+ NetBSD:		all

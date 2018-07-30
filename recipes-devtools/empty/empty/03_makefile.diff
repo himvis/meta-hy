@@ -1,0 +1,27 @@
+Index: empty-0.6.20b/Makefile
+===================================================================
+--- empty-0.6.20b.orig/Makefile
++++ empty-0.6.20b/Makefile
+@@ -14,6 +14,7 @@ CC =	cc
+ LIBS =	-lutil
+ 
+ PREFIX = /usr/local
++PREFIX = $(DESTDIR)/usr
+ 
+ all:
+ 	${CC} ${CFLAGS} -Wall ${LIBS} -o empty empty.c
+@@ -40,6 +41,8 @@ SunOS-gcc:
+ 	gcc ${CFLAGS} -Wall -o empty empty.c
+ 
+ install:
++
++installnot:
+ 	[ -f `which strip` ] && strip empty
+ 	[ -d ${PREFIX}/bin ] && cp empty ${PREFIX}/bin || mkdir -p ${PREFIX}/bin && cp empty ${PREFIX}/bin
+ 	[ -d ${PREFIX}/man/man1 ] && cp empty.1 ${PREFIX}/man/man1 || mkdir -p ${PREFIX}/man/man1 && cp empty.1 ${PREFIX}/man/man1
+@@ -49,4 +52,4 @@ deinstall:
+ uninstall:	deinstall
+ 
+ clean:
+-	rm empty 
++	rm -f empty 
