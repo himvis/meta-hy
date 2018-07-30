@@ -15,5 +15,6 @@ IMAGE_INSTALL_append = "\
     gawk \
     git \
     git-perltools \
+    empty \
     "
 
