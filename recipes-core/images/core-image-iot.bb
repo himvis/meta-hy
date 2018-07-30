@@ -16,5 +16,6 @@ IMAGE_INSTALL_append = "\
     git \
     git-perltools \
     empty \
+    dummy \
     "
 
